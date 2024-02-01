@@ -124,7 +124,138 @@ dennys_us <- dennys %>%
 colnames(dennys_us)
 ```
 
-
+It worked!
  
-Add exercise headings as needed.
+
+### Exercise 7
+
+Find the La Quinta locations that are outside the US, and figure out which country they are in. This might require some googling. Take notes, you will need to use this information in the next exercise.
+
+```{r exercise-7}
+laquinta_no_us <- laquinta %>% 
+  filter(!(state %in% states$abbreviation))
+laquinta_no_us %>%
+  select(address, city, state) %>%
+  print()
+```
+
+This seems to match perfectly what I came up with previously!  
+
+AG = Mexico (AGUASCALIENTES)
+QR = Mexico (Cancun)
+CH = Mexico (Coahuila?)
+NL = Mexico (NUEVO LEON)
+ANT = Columnbia (Antioquia)
+ON = Canada (Ontario)
+VE = Mexico (Veracruz)
+PU = Mexico (Pueblo)
+SL = Mexico (SAN LUIS POTOSI)
+FM = Honduras (Francisco Morazán)
+BC = Canada (British Columnbia)
+
+
+### Exercise 8
+
+Add a country variable to the La Quinta dataset. Use the case_when function to populate this variable. You’ll need to refer to your notes from Exercise 7 about which country the non-US locations are in. Here is some starter code to get you going:
+
+```{r exercise-8}
+laquinta_country <- laquinta %>% 
+  mutate(country = case_when(
+    state %in% state.abb ~ "United States",
+    state %in% c("ON", "BC") ~ "Canada",
+    state == "ANT" ~ "Colombia",
+    state == "FM" ~ "Honduras",
+    state %in% c("AG", "QR", "CH", "NL","VE", "PU","SL") ~ "Mexico"
+  ))
+```
+
+This command worked well.
+
+
+### Exercise 9
+
+```{r exercise-9a}
+laquinta_us <- laquinta_country %>% 
+ filter(country == "United States")
+state_freq_denny <- dennys_us %>%
+  count(state)
+print(state_freq_denny,  n = Inf)
+```
+
+```{r exercise-9b}
+state_freq_laquinta <- laquinta_us %>%
+    count(state)
+print(state_freq_laquinta,  n = Inf)
+```
+
+```{r exercise-9c}
+#the following was from chatgpt, as it was more helpful to see them together
+state_freq_denny <- dennys_us %>%
+  count(state) %>%
+  rename(dennys_freq = n)
+
+state_freq_laquinta <- laquinta_us %>%
+  count(state) %>%
+  rename(laquinta_freq = n)
+
+combined_freq <- full_join(state_freq_denny, state_freq_laquinta, by = "state")
+
+print(combined_freq, n = Inf)
+```
+
+
+Which states have the most and fewest Denny’s locations? What about La Quinta? Is this surprising? Why or why not?
+
+California has by far the most Denny's locations. Delaware has the fewest, but all small states had only a small number. All states had at least one.
+
+Texas has the most La Quinta locations. Again, size of state is an important factor, but another important factor is whether the state is southern or not.  DC, Delaware, and Hawaii have no La Quintas. 
+In general, the key difference is that there's a clear tendency for southern states to have more La Quinta locations, but not more Dennys locations. In retrospect, this isn't surprising at all given that states further south are more Spanish speaking, which is consistent with the name La Quinta. Furthermore, most of the non-US La Quintas are in Mexico, which is also consistent with this finding.
+
+
+
+### Exercise 10
+
+Next, let’s calculate which states have the most Denny’s locations per thousand square miles. This requires joining information from the frequency tables you created in the previous set with information from the states data frame.
+
+First, we count how many observations are in each state, which will give us a data frame with two variables: state and n. Then, we join this data frame with the states data frame. However note that the variables in the states data frame that has the two-letter abbreviations is called abbreviation. So when we’re joining the two data frames we specify that the state variable from the Denny’s data should be matched by the abbreviation variable from the states data:
+
+```{r exercise-10}
+dennys_us_with_area <- dennys_us %>% 
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>% 
+  mutate(location_per_thousand_miles = 1000* n / area) %>%
+  select(state, location_per_thousand_miles) %>%
+  print(n = Inf)
+laquinta_us_with_area <- laquinta_us %>% 
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>% 
+  mutate(location_per_thousand_miles = 1000* n / area) %>%
+  select(state, location_per_thousand_miles) %>%
+  print(n = Inf)
+```
+Before you move on the the next question, run the code above and take a look at the output. In the next exercise, you will need to build on this pipe.
+
+Which states have the most Denny’s locations per thousand square miles? What about La Quinta?
+
+For Denny's it is by far and away DC.
+
+For La Quinta, Rhode Island is tops, followed by Florida. 
+
+Note that in general, the smallest states had the largest ratios.
+
+
+### Exercise 11
+
+Next, we put the two datasets together into a single data frame. However before we do so, we need to add an identifier variable. We’ll call this establishment and set the value to "Denny's" and "La Quinta" for the dn and lq data frames, respectively.
+
+
+```{r exercise-11}
+dennys_to_combine <- dennys_us_with_area %>%
+  mutate(establishment = "Denny's")
+laquinta_to_combine <- laquinta_us_with_area %>%
+  mutate(establishment = "La Quinta")
+
+dn_lq <- bind_rows(dennys_to_combine, laquinta_to_combine)
+```
+
 
