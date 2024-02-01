@@ -1,13 +1,15 @@
-Lab 04 - La Quinta is Spanish for next to Denny’s, Pt. 1
+Lab 04 - Visualizing spatial data”
 ================
-Insert your name here
-Insert date here
+Eric Stone
+2024-01-31
 
 ### Load packages and data
 
 ``` r
 library(tidyverse) 
 library(dsbox) 
+data ("dennys")
+data ("laquinta")
 ```
 
 ``` r
@@ -16,30 +18,160 @@ states <- read_csv("data/states.csv")
 
 ### Exercise 1
 
-Remove this text, and add your answer for Exercise 1 here. Add code
-chunks as needed. Don’t forget to label your code chunk. Do not use
-spaces in code chunk labels.
+What are the dimensions of the Denny’s dataset? (Hint: Use inline R code
+and functions like nrow and ncol to compose your answer.) What does each
+row in the dataset represent? What are the variables?
+
+``` r
+number_of_rows <- nrow(dennys)
+number_of_columns <- ncol(dennys)
+print(paste("Number of rows:", number_of_rows))
+```
+
+    ## [1] "Number of rows: 1643"
+
+``` r
+print(paste("Number of columns:", number_of_columns))
+```
+
+    ## [1] "Number of columns: 6"
+
+``` r
+colnames(dennys)
+```
+
+    ## [1] "address"   "city"      "state"     "zip"       "longitude" "latitude"
+
+There are 1643 rows and 6 columns.
+
+The rows indicate the specific dennys establishment; the columns are the
+address, city, state, zip, longitude, and latitude.
 
 ### Exercise 2
 
-Remove this text, and add your answer for Exercise 1 here. Add code
-chunks as needed. Don’t forget to label your code chunk. Do not use
-spaces in code chunk labels.
+``` r
+number_of_rows <- nrow(laquinta)
+number_of_columns <- ncol(laquinta)
+print(paste("Number of rows:", number_of_rows))
+```
+
+    ## [1] "Number of rows: 909"
+
+``` r
+print(paste("Number of columns:", number_of_columns))
+```
+
+    ## [1] "Number of columns: 6"
+
+``` r
+colnames(laquinta)
+```
+
+    ## [1] "address"   "city"      "state"     "zip"       "longitude" "latitude"
+
+What are the dimensions of the La Quinta’s dataset? What does each row
+in the dataset represent? What are the variables?
+
+There are 909 rows and 6 columns.
+
+The rows indicate the specific laquita establishment; the columns are
+the address, city, state, zip, longitude, and latitude.
 
 ### Exercise 3
 
-…
+``` r
+# examined website and data sets
+```
+
+Take a look at the websites that the data come from (linked above). Are
+there any La Quinta’s locations outside of the US? If so, which
+countries? What about Denny’s?
+
+I saw no locations outside the US listed in the website
+<http://njgeo.org/2014/01/30/mitch-hedberg-and-gis/>
+
+I also saw no Denny’s that were outside the United States.
+
+However, there are La Quinta locations outside the US. The problem seems
+to be that states are listed that aren’t really states. The ones I
+detected were:
+
+Aguascalientes (State = AG) Medellin Colombia (State = ANT) Richmond
+(State = BC) Col Partido Iglesias Juarez (State = CH) contiguo Mall Las
+Cascadas Tegucigalpa (State = FM) Parque Industrial Interamerican
+Apodaca (State = NL) Col. Centro Monterrey (State = NL) Monterrey (State
+= NL) Oshawa (State = ON) San Jose Chiapa (State = PU) Col.
+ReservaTerritorial Atlixcayotl San Puebla (State = PU) Cancun (State =
+QR) San Luis Potosi (State = SL) Poza Rica (State = VE)
+
+It’s possible I missed one or two, but the point is that there are a
+bunch of these. The person who constructed this data set should be
+reprimanded.
 
 ### Exercise 4
 
-…
+``` r
+# describe possible approaches
+```
+
+Now take a look at the data. What would be some ways of determining
+whether or not either establishment has any locations outside the US
+using just the data (and not the websites). Don’t worry about whether
+you know how to implement this, just brainstorm some ideas. Write down
+at least one as your answer, but you’re welcomed to write down a few
+options too.
+
+Well, I “brute forced” it, using my knowledge of state abbreviations. I
+just scrolled down until I got to a state abbreviation I wasn’t familiar
+with. Typically there was only 1 instance of that abbreviation (three at
+most).
+
+In SPSS I would enter each of the 51 abbreviations as part of an if
+command, giving me a 1 if it matches and a 0 otherwise. The command
+would look something like:
+
+Do if state eq (al or aq or az ….) Compute US = 1 Else Compute US = 0
+End if
+
+I expect R could do something similar. That first command is tedious,
+though, with 51 states. Since these abbreviations are all listed in the
+‘states’ data set, there is probably a way to use that data set in
+conjunction with the laquinta data set and simpler code.
 
 ### Exercise 5
 
-…
+Find the Denny’s locations that are outside the US, if any. To do so,
+filter the Denny’s locations for observations where state is not in
+states$abbreviation. The code for this is given below. Note that the %in% operator matches the states listed in the state variable to those listed in states$abbreviation.
+The ! operator means not. Are there any Denny’s locations outside the
+US?
+
+``` r
+dennys  %>%
+  filter(!(state %in% states$abbreviation))
+```
+
+    ## # A tibble: 0 × 6
+    ## # ℹ 6 variables: address <chr>, city <chr>, state <chr>, zip <chr>,
+    ## #   longitude <dbl>, latitude <dbl>
+
+Nope, no dennys outside the US – at least not in this data set! (And
+yes, this is much easier than what I did :) )
 
 ### Exercise 6
 
-…
+Add a country variable to the Denny’s dataset and set all observations
+equal to “United States”. Remember, you can use the mutate function for
+adding a variable. Make sure to save the result of this as dn again so
+that the stored data frame contains the new variable going forward.
+
+``` r
+dennys_us <- dennys %>%
+  mutate(country = "United States")
+colnames(dennys_us)
+```
+
+    ## [1] "address"   "city"      "state"     "zip"       "longitude" "latitude" 
+    ## [7] "country"
 
 Add exercise headings as needed.
