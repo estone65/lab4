@@ -462,10 +462,73 @@ the state variable from the Denny’s data should be matched by the
 abbreviation variable from the states data:
 
 ``` r
+laquinta_us_with_area <- laquinta_us %>% 
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>%  
+  mutate(location_per_thousand_miles = 1000 * n / area)
+laquinta_us_with_area %>%
+  select(state, location_per_thousand_miles) %>%
+  print(n = Inf)
+```
+
+    ## # A tibble: 48 × 2
+    ##    state location_per_thousand_miles
+    ##    <chr>                       <dbl>
+    ##  1 AK                        0.00301
+    ##  2 AL                        0.305  
+    ##  3 AR                        0.244  
+    ##  4 AZ                        0.158  
+    ##  5 CA                        0.342  
+    ##  6 CO                        0.259  
+    ##  7 CT                        1.08   
+    ##  8 FL                        1.13   
+    ##  9 GA                        0.690  
+    ## 10 IA                        0.0711 
+    ## 11 ID                        0.120  
+    ## 12 IL                        0.294  
+    ## 13 IN                        0.467  
+    ## 14 KS                        0.109  
+    ## 15 KY                        0.247  
+    ## 16 LA                        0.535  
+    ## 17 MA                        0.568  
+    ## 18 MD                        1.05   
+    ## 19 ME                        0.0283 
+    ## 20 MI                        0.0414 
+    ## 21 MN                        0.0805 
+    ## 22 MO                        0.172  
+    ## 23 MS                        0.248  
+    ## 24 MT                        0.0612 
+    ## 25 NC                        0.223  
+    ## 26 ND                        0.0707 
+    ## 27 NE                        0.0646 
+    ## 28 NH                        0.214  
+    ## 29 NJ                        0.573  
+    ## 30 NM                        0.156  
+    ## 31 NV                        0.0724 
+    ## 32 NY                        0.348  
+    ## 33 OH                        0.379  
+    ## 34 OK                        0.415  
+    ## 35 OR                        0.102  
+    ## 36 PA                        0.217  
+    ## 37 RI                        1.29   
+    ## 38 SC                        0.250  
+    ## 39 SD                        0.0259 
+    ## 40 TN                        0.712  
+    ## 41 TX                        0.882  
+    ## 42 UT                        0.141  
+    ## 43 VA                        0.327  
+    ## 44 VT                        0.208  
+    ## 45 WA                        0.224  
+    ## 46 WI                        0.198  
+    ## 47 WV                        0.124  
+    ## 48 WY                        0.0307
+
+``` r
 dennys_us_with_area <- dennys_us %>% 
   count(state) %>%
   inner_join(states, by = c("state" = "abbreviation")) %>% 
-  mutate(location_per_thousand_miles = 1000* n / area) %>%
+  mutate(location_per_thousand_miles = 1000 * n / area)
+dennys_us_with_area %>%
   select(state, location_per_thousand_miles) %>%
   print(n = Inf)
 ```
@@ -524,67 +587,6 @@ dennys_us_with_area <- dennys_us %>%
     ## 49 WI                        0.382  
     ## 50 WV                        0.124  
     ## 51 WY                        0.0409
-
-``` r
-laquinta_us_with_area <- laquinta_us %>% 
-  count(state) %>%
-  inner_join(states, by = c("state" = "abbreviation")) %>% 
-  mutate(location_per_thousand_miles = 1000* n / area) %>%
-  select(state, location_per_thousand_miles) %>%
-  print(n = Inf)
-```
-
-    ## # A tibble: 48 × 2
-    ##    state location_per_thousand_miles
-    ##    <chr>                       <dbl>
-    ##  1 AK                        0.00301
-    ##  2 AL                        0.305  
-    ##  3 AR                        0.244  
-    ##  4 AZ                        0.158  
-    ##  5 CA                        0.342  
-    ##  6 CO                        0.259  
-    ##  7 CT                        1.08   
-    ##  8 FL                        1.13   
-    ##  9 GA                        0.690  
-    ## 10 IA                        0.0711 
-    ## 11 ID                        0.120  
-    ## 12 IL                        0.294  
-    ## 13 IN                        0.467  
-    ## 14 KS                        0.109  
-    ## 15 KY                        0.247  
-    ## 16 LA                        0.535  
-    ## 17 MA                        0.568  
-    ## 18 MD                        1.05   
-    ## 19 ME                        0.0283 
-    ## 20 MI                        0.0414 
-    ## 21 MN                        0.0805 
-    ## 22 MO                        0.172  
-    ## 23 MS                        0.248  
-    ## 24 MT                        0.0612 
-    ## 25 NC                        0.223  
-    ## 26 ND                        0.0707 
-    ## 27 NE                        0.0646 
-    ## 28 NH                        0.214  
-    ## 29 NJ                        0.573  
-    ## 30 NM                        0.156  
-    ## 31 NV                        0.0724 
-    ## 32 NY                        0.348  
-    ## 33 OH                        0.379  
-    ## 34 OK                        0.415  
-    ## 35 OR                        0.102  
-    ## 36 PA                        0.217  
-    ## 37 RI                        1.29   
-    ## 38 SC                        0.250  
-    ## 39 SD                        0.0259 
-    ## 40 TN                        0.712  
-    ## 41 TX                        0.882  
-    ## 42 UT                        0.141  
-    ## 43 VA                        0.327  
-    ## 44 VT                        0.208  
-    ## 45 WA                        0.224  
-    ## 46 WI                        0.198  
-    ## 47 WV                        0.124  
-    ## 48 WY                        0.0307
 
 Before you move on the the next question, run the code above and take a
 look at the output. In the next exercise, you will need to build on this
