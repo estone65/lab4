@@ -1,7 +1,7 @@
 Lab 04 - Visualizing spatial data”
 ================
 Eric Stone
-2024-02-01
+2024-02-05
 
 ### Load packages and data
 
@@ -18,9 +18,9 @@ states <- read_csv("data/states.csv")
 
 ### Exercise 1
 
-What are the dimensions of the Denny’s dataset? (Hint: Use inline R code
-and functions like nrow and ncol to compose your answer.) What does each
-row in the dataset represent? What are the variables?
+> What are the dimensions of the Denny’s dataset? (Hint: Use inline R
+> code and functions like nrow and ncol to compose your answer.) What
+> does each row in the dataset represent? What are the variables?
 
 ``` r
 number_of_rows <- nrow(dennys)
@@ -69,8 +69,8 @@ colnames(laquinta)
 
     ## [1] "address"   "city"      "state"     "zip"       "longitude" "latitude"
 
-What are the dimensions of the La Quinta’s dataset? What does each row
-in the dataset represent? What are the variables?
+> What are the dimensions of the La Quinta’s dataset? What does each row
+> in the dataset represent? What are the variables?
 
 There are 909 rows and 6 columns.
 
@@ -83,9 +83,9 @@ the address, city, state, zip, longitude, and latitude.
 # examined website and data sets
 ```
 
-Take a look at the websites that the data come from (linked above). Are
-there any La Quinta’s locations outside of the US? If so, which
-countries? What about Denny’s?
+> Take a look at the websites that the data come from (linked above).
+> Are there any La Quinta’s locations outside of the US? If so, which
+> countries? What about Denny’s?
 
 I saw no locations outside the US listed in the website
 <http://njgeo.org/2014/01/30/mitch-hedberg-and-gis/>
@@ -114,12 +114,12 @@ reprimanded.
 # describe possible approaches
 ```
 
-Now take a look at the data. What would be some ways of determining
-whether or not either establishment has any locations outside the US
-using just the data (and not the websites). Don’t worry about whether
-you know how to implement this, just brainstorm some ideas. Write down
-at least one as your answer, but you’re welcomed to write down a few
-options too.
+> Now take a look at the data. What would be some ways of determining
+> whether or not either establishment has any locations outside the US
+> using just the data (and not the websites). Don’t worry about whether
+> you know how to implement this, just brainstorm some ideas. Write down
+> at least one as your answer, but you’re welcomed to write down a few
+> options too.
 
 Well, I “brute forced” it, using my knowledge of state abbreviations. I
 just scrolled down until I got to a state abbreviation I wasn’t familiar
@@ -130,8 +130,8 @@ In SPSS I would enter each of the 51 abbreviations as part of an if
 command, giving me a 1 if it matches and a 0 otherwise. The command
 would look something like:
 
-Do if state eq (al or aq or az ….) Compute US = 1 Else Compute US = 0
-End if
+Do if state eq (al or aq or az ….) <br> Compute US = 1 <br> Else <br>
+Compute US = 0 <br> End if
 
 I expect R could do something similar. That first command is tedious,
 though, with 51 states. Since these abbreviations are all listed in the
@@ -140,11 +140,11 @@ conjunction with the laquinta data set and simpler code.
 
 ### Exercise 5
 
-Find the Denny’s locations that are outside the US, if any. To do so,
-filter the Denny’s locations for observations where state is not in
-states$abbreviation. The code for this is given below. Note that the %in% operator matches the states listed in the state variable to those listed in states$abbreviation.
-The ! operator means not. Are there any Denny’s locations outside the
-US?
+> Find the Denny’s locations that are outside the US, if any. To do so,
+> filter the Denny’s locations for observations where state is not in
+> states$abbreviation. The code for this is given below. Note that the %in% operator matches the states listed in the state variable to those listed in states$abbreviation.
+> The ! operator means not. Are there any Denny’s locations outside the
+> US?
 
 ``` r
 dennys  %>%
@@ -160,10 +160,11 @@ yes, this is much easier than what I did :) )
 
 ### Exercise 6
 
-Add a country variable to the Denny’s dataset and set all observations
-equal to “United States”. Remember, you can use the mutate function for
-adding a variable. Make sure to save the result of this as dn again so
-that the stored data frame contains the new variable going forward.
+> Add a country variable to the Denny’s dataset and set all observations
+> equal to “United States”. Remember, you can use the mutate function
+> for adding a variable. Make sure to save the result of this as dn
+> again so that the stored data frame contains the new variable going
+> forward.
 
 ``` r
 dennys_us <- dennys %>%
@@ -178,9 +179,9 @@ It worked!
 
 ### Exercise 7
 
-Find the La Quinta locations that are outside the US, and figure out
-which country they are in. This might require some googling. Take notes,
-you will need to use this information in the next exercise.
+> Find the La Quinta locations that are outside the US, and figure out
+> which country they are in. This might require some googling. Take
+> notes, you will need to use this information in the next exercise.
 
 ``` r
 laquinta_no_us <- laquinta %>% 
@@ -218,10 +219,10 @@ Columnbia)
 
 ### Exercise 8
 
-Add a country variable to the La Quinta dataset. Use the case_when
-function to populate this variable. You’ll need to refer to your notes
-from Exercise 7 about which country the non-US locations are in. Here is
-some starter code to get you going:
+> Add a country variable to the La Quinta dataset. Use the case_when
+> function to populate this variable. You’ll need to refer to your notes
+> from Exercise 7 about which country the non-US locations are in. Here
+> is some starter code to get you going:
 
 ``` r
 laquinta_country <- laquinta %>% 
@@ -429,8 +430,8 @@ print(combined_freq, n = Inf)
     ## 50 WV              3             3
     ## 51 WY              4             3
 
-Which states have the most and fewest Denny’s locations? What about La
-Quinta? Is this surprising? Why or why not?
+> Which states have the most and fewest Denny’s locations? What about La
+> Quinta? Is this surprising? Why or why not?
 
 California has by far the most Denny’s locations. Delaware has the
 fewest, but all small states had only a small number. All states had at
@@ -448,18 +449,18 @@ Mexico, which is also consistent with this finding.
 
 ### Exercise 10
 
-Next, let’s calculate which states have the most Denny’s locations per
-thousand square miles. This requires joining information from the
-frequency tables you created in the previous set with information from
-the states data frame.
+> Next, let’s calculate which states have the most Denny’s locations per
+> thousand square miles. This requires joining information from the
+> frequency tables you created in the previous set with information from
+> the states data frame.
 
-First, we count how many observations are in each state, which will give
-us a data frame with two variables: state and n. Then, we join this data
-frame with the states data frame. However note that the variables in the
-states data frame that has the two-letter abbreviations is called
-abbreviation. So when we’re joining the two data frames we specify that
-the state variable from the Denny’s data should be matched by the
-abbreviation variable from the states data:
+> First, we count how many observations are in each state, which will
+> give us a data frame with two variables: state and n. Then, we join
+> this data frame with the states data frame. However note that the
+> variables in the states data frame that has the two-letter
+> abbreviations is called abbreviation. So when we’re joining the two
+> data frames we specify that the state variable from the Denny’s data
+> should be matched by the abbreviation variable from the states data:
 
 ``` r
 laquinta_us_with_area <- laquinta_us %>% 
@@ -588,12 +589,12 @@ dennys_us_with_area %>%
     ## 50 WV                        0.124  
     ## 51 WY                        0.0409
 
-Before you move on the the next question, run the code above and take a
-look at the output. In the next exercise, you will need to build on this
-pipe.
+> Before you move on the the next question, run the code above and take
+> a look at the output. In the next exercise, you will need to build on
+> this pipe.
 
-Which states have the most Denny’s locations per thousand square miles?
-What about La Quinta?
+> Which states have the most Denny’s locations per thousand square
+> miles? What about La Quinta?
 
 For Denny’s it is by far and away DC.
 
@@ -601,18 +602,93 @@ For La Quinta, Rhode Island is tops, followed by Florida.
 
 Note that in general, the smallest states had the largest ratios.
 
-### Exercise 11
+### Practice at Mason’s
 
-Next, we put the two datasets together into a single data frame. However
-before we do so, we need to add an identifier variable. We’ll call this
-establishment and set the value to “Denny’s” and “La Quinta” for the dn
-and lq data frames, respectively.
+this will combine and save – it’s not relevant to this assignment, so am
+commenting it out
 
 ``` r
-dennys_to_combine <- dennys_us_with_area %>%
-  mutate(establishment = "Denny's")
-laquinta_to_combine <- laquinta_us_with_area %>%
-  mutate(establishment = "La Quinta")
+# laquinta_us <- laquinta_us %>% left_join(laquinta_us_with_area, by = c("state"))
+```
+
+### Exercise 11
+
+> Next, we put the two datasets together into a single data frame.
+> However before we do so, we need to add an identifier variable. We’ll
+> call this establishment and set the value to “Denny’s” and “La Quinta”
+> for the dn and lq data frames, respectively.
+
+``` r
+dennys_to_combine <- dennys_us %>%
+   mutate(establishment = "Denny's")
+laquinta_to_combine <- laquinta_us %>%
+   mutate(establishment = "La Quinta")
 
 dn_lq <- bind_rows(dennys_to_combine, laquinta_to_combine)
 ```
+
+This worked well. It’s basically what I did before, but using data sets
+that actually have latitude and longitude in them…. :)
+
+``` r
+ggplot(dn_lq, mapping = aes(
+   x = longitude,
+   y = latitude,
+   color = establishment
+ )) +
+   geom_point()
+```
+
+![](lab-04_files/figure-gfm/exercise-11b-1.png)<!-- -->
+
+And now this works, since latitude and longitude exist.
+
+> Filter the data for observations in North Carolina only, and recreate
+> the plot. You should also adjust the transparency of the points, by
+> setting the alpha level, so that it’s easier to see the overplotted
+> ones. Visually, does Mitch Hedberg’s joke appear to hold here?
+
+``` r
+dn_lq %>% 
+   filter(state == "NC") %>%
+   ggplot(mapping = aes(
+   x = longitude,
+   y = latitude,
+   color = establishment
+ )) +
+   geom_point(size = 1, alpha = 0.4) + 
+   labs(title = "Location of Dennys vs Laquinta in North Carolina")
+```
+
+![](lab-04_files/figure-gfm/exercise-11c-1.png)<!-- -->
+
+Not really. Although it is true that most of the Laquintas have Dennys
+near them, they don’t seem to be super close. Further, I expect the
+intermediate closeness is just a function of population. Big cities have
+both Dennys and Laquintas, while rural areas have neither. To really
+evaluate this question, I think you need to use other food chains, and
+see if they cluster further from Laquintas than Dennys does. If they do,
+I would start to be convinced.
+
+> Now filter the data for observations in Texas only, and recreate the
+> plot, with an appropriate alpha level. Visually, does Mitch Hedberg’s
+> joke appear to hold here?
+
+``` r
+dn_lq %>% 
+   filter(state == "TX") %>%
+   ggplot(mapping = aes(
+   x = longitude,
+   y = latitude,
+   color = establishment
+ )) +
+   geom_point(size = 2, alpha = 0.1) + 
+   labs(title = "Location of Dennys vs Laquinta in Texas")
+```
+
+![](lab-04_files/figure-gfm/exercise-12-1.png)<!-- -->
+
+Interesting. They do seem to cluster more tightly here. Again, hard to
+know if this is due to anything more than urban - rural differences, but
+it looks more plausible here at least. It would be helpful to have other
+establishments to really evaluate this issue.
